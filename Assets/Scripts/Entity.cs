@@ -4,24 +4,34 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    // STATIC:
+    public static List<Vector2Int> directions = new()
+        { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
+
     // PREFAB REFERENCE:
     [SerializeField] protected SpriteRenderer sr;
+    [SerializeField] protected Rigidbody2D rb;
+    [SerializeField] protected CircleCollider2D col;
+
+    [SerializeField] private float defaultMoveSpeed;
 
     // CONSTANT:
     [SerializeField] private List<Sprite> facingSprites = new();
-    private readonly List<Vector2Int> facingDirections = new()
-        { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
 
     // DYNAMIC:
-    public Vector2Int faceDirection;
+    protected Vector2 faceDirection;
+
+    protected float moveSpeed;
+
+    private bool walking;
 
     public void ChangeFaceDirectionFromVector(Vector2 normalizedDirection)
     {
         int closestDirectionIndex = 0;
         float closestDirectionDifference = 0;
-        for (int i = 0; i < facingDirections.Count; i++)
+        for (int i = 0; i < directions.Count; i++)
         {
-            float newDirectionDifference = Vector2.Distance(normalizedDirection, facingDirections[i]);
+            float newDirectionDifference = Vector2.Distance(normalizedDirection, directions[i]);
 
             if (i == 0 || newDirectionDifference < closestDirectionDifference)
             {
@@ -30,8 +40,30 @@ public class Entity : MonoBehaviour
             }
         }
 
-        sr.sprite = facingSprites[closestDirectionIndex];
+        ChangeFaceDirection(closestDirectionIndex);
+    }
 
-        faceDirection = facingDirections[closestDirectionIndex];
+    public void ChangeFaceDirection(int facingDirectionIndex)
+    {
+        sr.sprite = facingSprites[facingDirectionIndex];
+
+        faceDirection = directions[facingDirectionIndex];
+    }
+
+    public void OnSpawn()
+    {
+        walking = true;
+    }
+
+    protected virtual void Update()
+    {
+        moveSpeed = defaultMoveSpeed;
+        if (PhaseManager.LightningPhase)
+            moveSpeed *= 1 + PhaseManager.LightningPhaseIncrease;
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        rb.velocity = walking ? faceDirection * moveSpeed : Vector2.zero;
     }
 }

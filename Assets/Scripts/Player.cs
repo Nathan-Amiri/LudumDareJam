@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class Player : Entity
 {
-    // PREFAB REFERENCE:
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private CircleCollider2D col;
-
         // 0 = standard, 1 = explode, 2 = sniper, 3 = spawner, 4 = shieldbearer
-    [SerializeField] private List<Zombie> zombies = new();
+    [SerializeField] private List<Minion> minions = new();
 
     // SCENE REFERENCE:
     [SerializeField] private Camera mainCamera;
@@ -17,9 +13,7 @@ public class Player : Entity
     [SerializeField] private Transform zombieParent;
 
     // CONSTANT:
-    private readonly float moveSpeed = 3;
-
-    private readonly float teleportDuration = .3f;
+    [SerializeField] private float teleportDuration = .3f;
 
     private readonly List<int> corpseQueue = new();
 
@@ -30,16 +24,10 @@ public class Player : Entity
 
     private bool isStunned;
 
-    private Zombie zombieToActivate;
+    private Minion minionToActivate;
 
     private Vector2 teleportDestination;
     private Coroutine teleportRoutine;
-
-    private void Start()
-    {
-        for (int i = 0; i < 10; i++)
-            corpseQueue.Add(0);
-    }
 
     public void PhaseStart()
     {
@@ -52,8 +40,10 @@ public class Player : Entity
         isStunned = false;
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+
         Vector3 tempMousePosition = Input.mousePosition;
         tempMousePosition.z = -mainCamera.transform.position.z;
         mousePosition = mainCamera.ScreenToWorldPoint(tempMousePosition);
@@ -61,27 +51,32 @@ public class Player : Entity
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
 
-        if (zombieToActivate != null)
+        if (minionToActivate != null)
         {
-            Vector2 direction = mousePosition - (Vector2)zombieToActivate.transform.position;
+            Vector2 direction = mousePosition - (Vector2)minionToActivate.transform.position;
             if (direction != Vector2.zero)
-                zombieToActivate.ChangeFaceDirectionFromVector(direction.normalized);
+                minionToActivate.ChangeFaceDirectionFromVector(direction.normalized);
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (zombieToActivate == null)
+            if (minionToActivate == null)
                 Summon();
             else
                 ActivateZombie();
         }
 
+        if (isStunned)
+            return;
+
         if (Input.GetMouseButtonDown(1))
             Teleport();
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        // No base
+
         if (isStunned)
             return;
 
@@ -109,15 +104,15 @@ public class Player : Entity
         if (corpseQueue.Count == 0)
             return;
 
-        zombieToActivate = Instantiate(zombies[corpseQueue[0]], mousePosition, Quaternion.identity, zombieParent);
+        minionToActivate = Instantiate(minions[corpseQueue[0]], mousePosition, Quaternion.identity, zombieParent);
 
         corpseQueue.RemoveAt(0);
     }
     private void ActivateZombie()
     {
-        zombieToActivate.OnActivate();
+        minionToActivate.OnActivate();
 
-        zombieToActivate = null;
+        minionToActivate = null;
     }
 
     public void Teleport()

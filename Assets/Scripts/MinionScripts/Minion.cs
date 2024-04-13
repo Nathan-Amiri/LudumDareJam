@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Zombie : Entity
+public class Minion : Entity
 {
-    // PREFAB REFERENCE:
-    [SerializeField] private CircleCollider2D col;
-
     // CONSTANT:
     private readonly float bouncePadTransparency = .8f;
 

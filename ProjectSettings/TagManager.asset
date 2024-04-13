@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Light
+  - Dark
   layers:
   - Default
   - TransparentFX
@@ -40,4 +42,25 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Tile
+    uniqueID: 1288643731
+    locked: 0
+  - name: Obstacle
+    uniqueID: 3152984509
+    locked: 0
+  - name: Corpse
+    uniqueID: 2153746749
+    locked: 0
+  - name: Enemy
+    uniqueID: 718624601
+    locked: 0
+  - name: Minion
+    uniqueID: 800768475
+    locked: 0
+  - name: Player
+    uniqueID: 3066568329
+    locked: 0
+  - name: UI
+    uniqueID: 3653554185
     locked: 0
