@@ -46,7 +46,7 @@ public class EnemySpawner : MonoBehaviour
         StartStopSpawning(true);
     }
 
-    public void StartStopSpawning(bool start)
+    public void StartStopSpawning(bool start) // Called by PhaseManager
     {
         if (start)
         {
@@ -77,7 +77,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    public void SpawnEnemy()
+    private void SpawnEnemy()
     {
         int enemyType = enemyPool[Random.Range(0, enemyPool.Count)];
 
