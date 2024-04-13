@@ -1,0 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Zombie : Entity
+{
+    // PREFAB REFERENCE:
+    [SerializeField] private CircleCollider2D col;
+
+    // CONSTANT:
+    private readonly float bouncePadTransparency = .8f;
+
+    private void Start()
+    {
+        ToggleReady(false);
+    }
+
+    private void ToggleReady(bool ready)
+    {
+        sr.color = ready ? Color.white : new Color(1, 1, 1, bouncePadTransparency);
+        col.enabled = ready;
+    }
+
+    public virtual void OnActivate()
+    {
+        ToggleReady(true);
+
+        // Move using faceDirection
+    }
+}

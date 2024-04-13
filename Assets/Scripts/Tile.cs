@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     // STATIC:
-    public static Dictionary<Vector2Int, Tile> gridIndex = new();
+    public static Dictionary<Vector2Int, Tile> tileGridIndex = new();
 
     // PREFAB REFERENCE:
     [SerializeField] private SpriteRenderer sr;
@@ -14,7 +14,7 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {
-        gridIndex.Add(Vector2Int.RoundToInt(transform.position), this);
+        tileGridIndex.Add(Vector2Int.RoundToInt(transform.position), this);
     }
 
     public void ToggleLightDark(bool light)

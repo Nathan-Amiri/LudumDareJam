@@ -2,19 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
     // PREFAB REFERENCE:
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private CircleCollider2D col;
 
+        // 0 = standard, 1 = explode, 2 = sniper, 3 = spawner, 4 = shieldbearer
+    [SerializeField] private List<Zombie> zombies = new();
+
     // SCENE REFERENCE:
     [SerializeField] private Camera mainCamera;
+
+    [SerializeField] private Transform zombieParent;
 
     // CONSTANT:
     private readonly float moveSpeed = 3;
 
     private readonly float teleportDuration = .3f;
+
+    private readonly List<int> corpseQueue = new();
 
     // DYNAMIC:
     private Vector2 mousePosition;
@@ -23,8 +30,16 @@ public class Player : MonoBehaviour
 
     private bool isStunned;
 
+    private Zombie zombieToActivate;
+
     private Vector2 teleportDestination;
     private Coroutine teleportRoutine;
+
+    private void Start()
+    {
+        for (int i = 0; i < 10; i++)
+            corpseQueue.Add(0);
+    }
 
     public void PhaseStart()
     {
@@ -46,8 +61,20 @@ public class Player : MonoBehaviour
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
 
+        if (zombieToActivate != null)
+        {
+            Vector2Int newFaceDirection = Vector2Int.RoundToInt(mousePosition - (Vector2)zombieToActivate.transform.position);
+            zombieToActivate.ChangeFaceDirection(newFaceDirection);
+        }
+
         if (Input.GetMouseButtonDown(0))
-            Summon();
+        {
+            if (zombieToActivate == null)
+                Summon();
+            else
+                ActivateZombie();
+        }
+
         if (Input.GetMouseButtonDown(1))
             Teleport();
     }
@@ -75,7 +102,18 @@ public class Player : MonoBehaviour
 
     private void Summon()
     {
+        if (corpseQueue.Count == 0)
+            return;
 
+        zombieToActivate = Instantiate(zombies[corpseQueue[0]], mousePosition, Quaternion.identity, zombieParent);
+
+        corpseQueue.RemoveAt(0);
+    }
+    private void ActivateZombie()
+    {
+        zombieToActivate.OnActivate();
+
+        zombieToActivate = null;
     }
 
     public void Teleport()
