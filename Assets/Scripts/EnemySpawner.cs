@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,35 +16,32 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float averageSpawnDelay;
     [SerializeField] private float spawnDelayVariance;
 
-    [SerializeField] private float gruntSpawnChance;
-    [SerializeField] private float mageSpawnChance;
-    [SerializeField] private float priestSpawnChance;
-    [SerializeField] private float cartSpawnChance;
-    [SerializeField] private float shieldbearerSpawnChance;
+    [SerializeField] private List<int> spawnChanceByType = new();
 
-    [SerializeField] private float enemyModeIncrease;
-    [SerializeField] private float enemyModeDecrease;
+    [SerializeField] private int enemyModeIncrease;
+    [SerializeField] private int enemyModeDecrease;
 
     // CONSTANT:
-    private readonly List<int> enemyPool = new();
+    private readonly List<int> enemyTypePool = new();
+
+        // Read by Enemy
+    [NonSerialized] public readonly List<Enemy> activeEnemies = new();
 
     // DYNAMIC:
     private Coroutine spawnRoutine;
 
-    private void Start()
+    public void NewEnemyPool(bool boost, int boostedType = 0) // Called by PhaseManager
     {
-        for (int i = 0; i < gruntSpawnChance; i++)
-            enemyPool.Add(0);
-        for (int i = 0; i < mageSpawnChance; i++)
-            enemyPool.Add(1);
-        for (int i = 0; i < priestSpawnChance; i++)
-            enemyPool.Add(2);
-        for (int i = 0; i < cartSpawnChance; i++)
-            enemyPool.Add(3);
-        for (int i = 0; i < shieldbearerSpawnChance; i++)
-            enemyPool.Add(4);
+        for (int i = 0; i < spawnChanceByType.Count; i++)
+        {
+            int chance = spawnChanceByType[i];
 
-        StartStopSpawning(true);
+            if (boost)
+                chance += i == boostedType ? enemyModeIncrease : -enemyModeDecrease;
+
+            for (int j = 0; j < chance; j++)
+                enemyTypePool.Add(i);
+        }
     }
 
     public void StartStopSpawning(bool start) // Called by PhaseManager
@@ -68,7 +66,7 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnEnemy();
 
-            float delay = averageSpawnDelay + Random.Range(-spawnDelayVariance / 2, spawnDelayVariance / 2);
+            float delay = averageSpawnDelay + UnityEngine.Random.Range(-spawnDelayVariance / 2, spawnDelayVariance / 2);
 
             if (PhaseManager.LightningPhase)
                 delay *= 1 - PhaseManager.LightningPhaseIncrease;
@@ -79,15 +77,24 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        int enemyType = enemyPool[Random.Range(0, enemyPool.Count)];
+        int enemyType = enemyTypePool[UnityEngine.Random.Range(0, enemyTypePool.Count)];
 
-        Vector2 spawnDirection = Entity.directions[Random.Range(0, 4)];
-        float offsetDistance = Random.Range(-spawnWidth / 2, spawnWidth / 2);
+        Vector2 spawnDirection = Entity.directions[UnityEngine.Random.Range(0, 4)];
+        float offsetDistance = UnityEngine.Random.Range(-spawnWidth / 2, spawnWidth / 2);
         Vector2 spawnOffset = Vector2.Perpendicular(spawnDirection) * offsetDistance;
         Vector2 spawnPosition = Vector2Int.RoundToInt(spawnDirection * spawnDistance + spawnOffset);
 
         Enemy enemy = Instantiate(enemyPrefs[enemyType], spawnPosition, Quaternion.identity, enemyParent);
+        activeEnemies.Add(enemy);
+        enemy.enemySpawner = this;
         enemy.ChangeFaceDirectionFromVector(-spawnDirection);
         enemy.OnSpawn();
+    }
+
+    public void ClearEnemies()
+    {
+        // Enemies remove themselves from activeEnemies automatically
+        foreach (Enemy enemy in activeEnemies)
+            enemy.DestroyEntity();
     }
 }

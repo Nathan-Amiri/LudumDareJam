@@ -15,13 +15,13 @@ public class Minion : Entity
     private void ToggleReady(bool ready)
     {
         sr.color = ready ? Color.white : new Color(1, 1, 1, bouncePadTransparency);
-        col.enabled = ready;
+        auraCol.enabled = ready;
     }
 
     public virtual void OnActivate()
     {
         ToggleReady(true);
 
-        // Move using faceDirection
+        rb.velocity = faceDirection * moveSpeed;
     }
 }

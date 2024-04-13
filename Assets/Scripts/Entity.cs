@@ -13,6 +13,10 @@ public class Entity : MonoBehaviour
     [SerializeField] protected Rigidbody2D rb;
     [SerializeField] protected CircleCollider2D col;
 
+    [SerializeField] protected CircleCollider2D auraCol;
+
+    [SerializeField] bool lightAura;
+
     [SerializeField] private float defaultMoveSpeed;
 
     // CONSTANT:
@@ -22,8 +26,6 @@ public class Entity : MonoBehaviour
     protected Vector2 faceDirection;
 
     protected float moveSpeed;
-
-    private bool walking;
 
     public void ChangeFaceDirectionFromVector(Vector2 normalizedDirection)
     {
@@ -50,11 +52,6 @@ public class Entity : MonoBehaviour
         faceDirection = directions[facingDirectionIndex];
     }
 
-    public void OnSpawn()
-    {
-        walking = true;
-    }
-
     protected virtual void Update()
     {
         moveSpeed = defaultMoveSpeed;
@@ -62,8 +59,14 @@ public class Entity : MonoBehaviour
             moveSpeed *= 1 + PhaseManager.LightningPhaseIncrease;
     }
 
-    protected virtual void FixedUpdate()
+    public virtual void DestroyEntity()
     {
-        rb.velocity = walking ? faceDirection * moveSpeed : Vector2.zero;
+        Destroy(gameObject);
+    }
+
+    public virtual void AuraTrigger(Collider2D col) // Called by Aura
+    {
+        if (col.CompareTag(lightAura ? "DarkTile" : "LightTile"))
+            col.GetComponent<Tile>().ToggleLightDark(lightAura);
     }
 }

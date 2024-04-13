@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class Player : Entity
 {
-        // 0 = standard, 1 = explode, 2 = sniper, 3 = spawner, 4 = shieldbearer
+    // ENEMY/CORPSE/MINION TYPE NUMBERS CONSISTENT ACROSS SCRIPTS:
+    // 0 = Grunt, 1 = Mage, 2 = Priest, 3 = Cart, 4 = Shieldbearer
+
+    // STATIC:
+        // Set by Corpse
+    public static Transform corpseMouseOver;
+
+    // PREFAB REFERENCE:
     [SerializeField] private List<Minion> minions = new();
 
     // SCENE REFERENCE:
@@ -29,15 +36,15 @@ public class Player : Entity
     private Vector2 teleportDestination;
     private Coroutine teleportRoutine;
 
-    public void PhaseStart()
+    public void GameStartEnd(bool start)
     {
-        if (teleportRoutine != null)
+        if (!start && teleportRoutine != null)
         {
             StopCoroutine(teleportRoutine);
             col.enabled = true;
         }
 
-        isStunned = false;
+        isStunned = !start;
     }
 
     protected override void Update()
@@ -73,18 +80,11 @@ public class Player : Entity
             Teleport();
     }
 
-    protected override void FixedUpdate()
+    protected void FixedUpdate()
     {
-        // No base
-
         if (isStunned)
             return;
 
-        Move();
-    }
-
-    private void Move() // Run in Fixed Update
-    {
         if (moveInput != Vector2.zero)
             ChangeFaceDirectionFromVector(moveInput.normalized);
 
@@ -117,10 +117,13 @@ public class Player : Entity
 
     public void Teleport()
     {
+        if (corpseMouseOver == null)
+            return;
+
         col.enabled = false;
         isStunned = true;
 
-        teleportDestination = mousePosition;
+        teleportDestination = corpseMouseOver.transform.position;
         teleportRoutine = StartCoroutine(TeleportRoutine(teleportDuration));
 
         float teleportSpeed = Vector2.Distance(teleportDestination, transform.position) / teleportDuration;
@@ -136,5 +139,19 @@ public class Player : Entity
         isStunned = false;
 
         col.enabled = true;
+    }
+
+    public override void AuraTrigger(Collider2D col) // Called by Aura
+    {
+        base.AuraTrigger(col);
+
+        if (col.CompareTag("Corpse"))
+        {
+            Corpse corpse = col.GetComponent<Corpse>();
+
+            corpseQueue.Add(corpse.corpseType);
+
+            Destroy(corpse.gameObject);
+        }
     }
 }
