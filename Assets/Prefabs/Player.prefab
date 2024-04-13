@@ -100,10 +100,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 3800793064109666485}
-  facingSprites: []
+  facingSprites:
+  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   rb: {fileID: 4812432579170558682}
   col: {fileID: 3556799891844642842}
-  zombies: []
+  zombies:
+  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
   mainCamera: {fileID: 0}
   zombieParent: {fileID: 0}
 --- !u!50 &4812432579170558682

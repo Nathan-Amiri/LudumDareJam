@@ -63,8 +63,9 @@ public class Player : Entity
 
         if (zombieToActivate != null)
         {
-            Vector2Int newFaceDirection = Vector2Int.RoundToInt(mousePosition - (Vector2)zombieToActivate.transform.position);
-            zombieToActivate.ChangeFaceDirection(newFaceDirection);
+            Vector2 direction = mousePosition - (Vector2)zombieToActivate.transform.position;
+            if (direction != Vector2.zero)
+                zombieToActivate.ChangeFaceDirectionFromVector(direction.normalized);
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -89,6 +90,9 @@ public class Player : Entity
 
     private void Move() // Run in Fixed Update
     {
+        if (moveInput != Vector2.zero)
+            ChangeFaceDirectionFromVector(moveInput.normalized);
+
         // Snappy horizontal movement:
         // (This movement method will prevent the player from slowing completely in a frictionless environment. To prevent this,
         // ensure that either at least a tiny bit of friction is present or the player's velocity is rounded to 0 when low enough)

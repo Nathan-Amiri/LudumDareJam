@@ -13,17 +13,25 @@ public class Entity : MonoBehaviour
         { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
 
     // DYNAMIC:
-    private Vector2Int faceDirection;
+    public Vector2Int faceDirection;
 
-    public void ChangeFaceDirection(Vector2Int newDirection)
+    public void ChangeFaceDirectionFromVector(Vector2 normalizedDirection)
     {
-        faceDirection = newDirection;
-
+        int closestDirectionIndex = 0;
+        float closestDirectionDifference = 0;
         for (int i = 0; i < facingDirections.Count; i++)
-            if (facingDirections[i] == newDirection)
+        {
+            float newDirectionDifference = Vector2.Distance(normalizedDirection, facingDirections[i]);
+
+            if (i == 0 || newDirectionDifference < closestDirectionDifference)
             {
-                sr.sprite = facingSprites[i];
-                return;
+                closestDirectionIndex = i;
+                closestDirectionDifference = newDirectionDifference;
             }
+        }
+
+        sr.sprite = facingSprites[closestDirectionIndex];
+
+        faceDirection = facingDirections[closestDirectionIndex];
     }
 }
