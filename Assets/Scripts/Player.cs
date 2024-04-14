@@ -45,12 +45,12 @@ public class Player : Entity
         }
 
         isStunned = !start;
+        if (!start)
+            rb.velocity = Vector2.zero;
     }
 
-    protected override void Update()
+    private void Update()
     {
-        base.Update();
-
         Vector3 tempMousePosition = Input.mousePosition;
         tempMousePosition.z = -mainCamera.transform.position.z;
         mousePosition = mainCamera.ScreenToWorldPoint(tempMousePosition);

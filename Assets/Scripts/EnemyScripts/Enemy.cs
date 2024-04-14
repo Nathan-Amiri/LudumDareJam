@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : Entity
@@ -39,9 +38,11 @@ public class Enemy : Entity
 
     private void SpawnCorpse()
     {
+        Vector2Int gridPosition = Vector2Int.RoundToInt(transform.position);
+        if (gridPosition.magnitude > 18)
+            return;
 
-
-        Corpse corpse = Instantiate(corpsePref, transform.position, Quaternion.identity);
+        Corpse corpse = Instantiate(corpsePref, (Vector2)gridPosition, Quaternion.identity);
         corpse.OnSpawn(enemyType);
     }
 }

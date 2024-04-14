@@ -22,6 +22,7 @@ public class Minion : Entity
     {
         ToggleReady(true);
 
+        SetMoveSpeed();
         rb.velocity = faceDirection * moveSpeed;
     }
 }

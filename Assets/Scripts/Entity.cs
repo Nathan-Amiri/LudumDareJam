@@ -52,7 +52,7 @@ public class Entity : MonoBehaviour
         faceDirection = directions[facingDirectionIndex];
     }
 
-    protected virtual void Update()
+    public void SetMoveSpeed()
     {
         moveSpeed = defaultMoveSpeed;
         if (PhaseManager.LightningPhase)

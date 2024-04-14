@@ -18,6 +18,8 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private List<int> spawnChanceByType = new();
 
+    [SerializeField] private float spawnDuration;
+
     [SerializeField] private int enemyModeIncrease;
     [SerializeField] private int enemyModeDecrease;
 
@@ -48,6 +50,8 @@ public class EnemySpawner : MonoBehaviour
     {
         if (start)
         {
+            NewEnemyPool(false);
+
             if (spawnRoutine != null)
                 Debug.LogError("Spawn routine already running!");
 
@@ -55,8 +59,10 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-            StopCoroutine(SpawnRoutine());
+            StopCoroutine(spawnRoutine);
             spawnRoutine = null;
+
+            ClearEnemies();
         }
     }
 
@@ -86,15 +92,31 @@ public class EnemySpawner : MonoBehaviour
 
         Enemy enemy = Instantiate(enemyPrefs[enemyType], spawnPosition, Quaternion.identity, enemyParent);
         activeEnemies.Add(enemy);
+
         enemy.enemySpawner = this;
         enemy.ChangeFaceDirectionFromVector(-spawnDirection);
+        enemy.SetMoveSpeed();
         enemy.OnSpawn();
+
+        StartCoroutine(DespawnEnemy(enemy));
+    }
+
+    private IEnumerator DespawnEnemy(Enemy enemy)
+    {
+        yield return new WaitForSeconds(spawnDuration);
+
+        // Enemies remove themselves from activeEnemies automatically
+        if (enemy != null)
+            enemy.DestroyEntity();
     }
 
     public void ClearEnemies()
     {
         // Enemies remove themselves from activeEnemies automatically
+        List<Enemy> enemiesToDestroy = new();
         foreach (Enemy enemy in activeEnemies)
+            enemiesToDestroy.Add(enemy);
+        foreach (Enemy enemy in enemiesToDestroy)
             enemy.DestroyEntity();
     }
 }
