@@ -111,9 +111,22 @@ MonoBehaviour:
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  minions: []
+  minions:
+  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
+  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
+  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
+  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
+  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
+  minionSprites:
+  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   mainCamera: {fileID: 0}
   zombieParent: {fileID: 0}
+  summonQueue: {fileID: 0}
+  nextSummonImage: {fileID: 0}
   teleportDuration: 0.3
 --- !u!50 &4812432579170558682
 Rigidbody2D:

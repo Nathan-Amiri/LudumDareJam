@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : Entity
 {
@@ -13,11 +14,15 @@ public class Player : Entity
 
     // PREFAB REFERENCE:
     [SerializeField] private List<Minion> minions = new();
+    [SerializeField] private List<Sprite> minionSprites = new();
 
     // SCENE REFERENCE:
     [SerializeField] private Camera mainCamera;
 
     [SerializeField] private Transform zombieParent;
+
+    [SerializeField] private GameObject summonQueue;
+    [SerializeField] private Image nextSummonImage;
 
     // CONSTANT:
     [SerializeField] private float teleportDuration;
@@ -51,6 +56,14 @@ public class Player : Entity
 
     private void Update()
     {
+        if (corpseQueue.Count > 0)
+            nextSummonImage.sprite = minionSprites[corpseQueue[0]];
+        if (corpseQueue.Count > 0 && !summonQueue.activeSelf)
+
+            summonQueue.SetActive(true);
+        else if (corpseQueue.Count == 0 && summonQueue.activeSelf)
+            summonQueue.SetActive(false);
+
         Vector3 tempMousePosition = Input.mousePosition;
         tempMousePosition.z = -mainCamera.transform.position.z;
         mousePosition = mainCamera.ScreenToWorldPoint(tempMousePosition);
