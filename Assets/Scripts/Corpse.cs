@@ -17,13 +17,11 @@ public class Corpse : MonoBehaviour
         sr.sprite = corpseSprites[corpseType];
     }
 
-    public void OnMouseEnter()
+    private void Update()
     {
-        Player.corpseMouseOver = transform;
-    }
-    public void OnMouseExit()
-    {
-        if (Player.corpseMouseOver == transform)
+        if (Vector2Int.RoundToInt(Player.mousePosition) == Vector2Int.RoundToInt(transform.position))
+            Player.corpseMouseOver = transform;
+        else if (Player.corpseMouseOver == transform)
             Player.corpseMouseOver = null;
     }
 }

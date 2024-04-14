@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class Player : Entity
     // 0 = Grunt, 1 = Mage, 2 = Priest, 3 = Cart, 4 = Shieldbearer
 
     // STATIC:
+    public static Vector2 mousePosition;
+
         // Set by Corpse
     public static Transform corpseMouseOver;
 
@@ -27,11 +30,10 @@ public class Player : Entity
     // CONSTANT:
     [SerializeField] private float teleportDuration;
 
-    private readonly List<int> corpseQueue = new();
+        // Accessed by Aura
+    [NonSerialized] public readonly List<int> corpseQueue = new();
 
     // DYNAMIC:
-    private Vector2 mousePosition;
-
     private Vector2 moveInput;
 
     private bool isStunned;
@@ -152,19 +154,5 @@ public class Player : Entity
         isStunned = false;
 
         col.enabled = true;
-    }
-
-    public override void AuraTrigger(Collider2D col) // Called by Aura
-    {
-        base.AuraTrigger(col);
-
-        if (col.CompareTag("Corpse"))
-        {
-            Corpse corpse = col.GetComponent<Corpse>();
-
-            corpseQueue.Add(corpse.corpseType);
-
-            Destroy(corpse.gameObject);
-        }
     }
 }

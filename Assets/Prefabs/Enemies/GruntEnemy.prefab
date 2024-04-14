@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7764035752528663821}
   - component: {fileID: 2611846269317883746}
-  - component: {fileID: 4598757190814467430}
+  - component: {fileID: 2438937577361268785}
   - component: {fileID: 7616221852266778383}
   - component: {fileID: 6830572338072409104}
   m_Layer: 0
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4598757190814467430
+--- !u!114 &2438937577361268785
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,15 +97,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3328963094491394476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7960dcb06e58baa40b072e81042a1928, type: 3}
+  m_Script: {fileID: 11500000, guid: ff4881d68864e4847b8c5634ef9ad963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 2611846269317883746}
   rb: {fileID: 7616221852266778383}
   col: {fileID: 6830572338072409104}
   auraCol: {fileID: 1779884345261711212}
-  lightAura: 1
-  defaultMoveSpeed: 2.5
+  defaultMoveSpeed: 2
   facingSprites:
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
@@ -234,7 +233,11 @@ PrefabInstance:
     - target: {fileID: 4931576555004821385, guid: 422a4aca790ff704a913a69a8d53ad72, type: 3}
       propertyPath: entity
       value: 
-      objectReference: {fileID: 4598757190814467430}
+      objectReference: {fileID: 2438937577361268785}
+    - target: {fileID: 4931576555004821385, guid: 422a4aca790ff704a913a69a8d53ad72, type: 3}
+      propertyPath: lightAura
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9117086739593262849, guid: 422a4aca790ff704a913a69a8d53ad72, type: 3}
       propertyPath: m_Name
       value: Aura

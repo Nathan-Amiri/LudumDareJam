@@ -18,15 +18,13 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private List<int> spawnChanceByType = new();
 
-    [SerializeField] private float spawnDuration;
-
     [SerializeField] private int enemyModeIncrease;
     [SerializeField] private int enemyModeDecrease;
 
     // CONSTANT:
     private readonly List<int> enemyTypePool = new();
 
-        // Read by Enemy
+        // Accessed by Enemy
     [NonSerialized] public readonly List<Enemy> activeEnemies = new();
 
     // DYNAMIC:
@@ -97,17 +95,6 @@ public class EnemySpawner : MonoBehaviour
         enemy.ChangeFaceDirectionFromVector(-spawnDirection);
         enemy.SetMoveSpeed();
         enemy.OnSpawn();
-
-        StartCoroutine(DespawnEnemy(enemy));
-    }
-
-    private IEnumerator DespawnEnemy(Enemy enemy)
-    {
-        yield return new WaitForSeconds(spawnDuration);
-
-        // Enemies remove themselves from activeEnemies automatically
-        if (enemy != null)
-            enemy.DestroyEntity();
     }
 
     public void ClearEnemies()

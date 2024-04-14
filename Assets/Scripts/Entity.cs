@@ -15,8 +15,6 @@ public class Entity : MonoBehaviour
 
     [SerializeField] protected CircleCollider2D auraCol;
 
-    [SerializeField] bool lightAura;
-
     [SerializeField] private float defaultMoveSpeed;
 
     // CONSTANT:
@@ -62,11 +60,5 @@ public class Entity : MonoBehaviour
     public virtual void DestroyEntity()
     {
         Destroy(gameObject);
-    }
-
-    public virtual void AuraTrigger(Collider2D col) // Called by Aura
-    {
-        if (col.CompareTag(lightAura ? "DarkTile" : "LightTile"))
-            col.GetComponent<Tile>().ToggleLightDark(lightAura);
     }
 }

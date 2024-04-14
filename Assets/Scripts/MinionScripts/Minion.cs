@@ -4,25 +4,31 @@ using UnityEngine;
 
 public class Minion : Entity
 {
-    // CONSTANT:
-    private readonly float bouncePadTransparency = .8f;
+    [SerializeField] private List<SpriteRenderer> auraRenderers = new();
+    [SerializeField] private List<CircleCollider2D> auraColliders = new();
 
-    private void Start()
-    {
-        ToggleReady(false);
-    }
-
-    private void ToggleReady(bool ready)
-    {
-        sr.color = ready ? Color.white : new Color(1, 1, 1, bouncePadTransparency);
-        auraCol.enabled = ready;
-    }
+    [SerializeField] private GameObject spawnExplosion;
+    [SerializeField] private float spawnExplosionDuration;
 
     public virtual void OnActivate()
     {
-        ToggleReady(true);
+        sr.color = Color.white;
+        foreach (SpriteRenderer auraRenderer in auraRenderers)
+            auraRenderer.color = Color.white;
+
+        foreach (CircleCollider2D auraCollider in auraColliders)
+            auraCollider.enabled = true;
 
         SetMoveSpeed();
         rb.velocity = faceDirection * moveSpeed;
+
+        StartCoroutine(SpawnExplosionEnd());
+    }
+
+    private IEnumerator SpawnExplosionEnd()
+    {
+        yield return new WaitForSeconds(spawnExplosionDuration);
+
+        spawnExplosion.SetActive(false);
     }
 }

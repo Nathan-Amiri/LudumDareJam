@@ -41,7 +41,7 @@ public class PhaseManager : MonoBehaviour
             currentScoreText.text = "Current Score:\n" + GetScore().ToString() + "%";
 
             timeRemaining -= Time.deltaTime;
-            clockText.text = "New Phase in:\n" + Mathf.FloorToInt(timeRemaining).ToString();
+            clockText.text = "New Phase in:\n" + Mathf.CeilToInt(timeRemaining).ToString();
         }
     }
 
