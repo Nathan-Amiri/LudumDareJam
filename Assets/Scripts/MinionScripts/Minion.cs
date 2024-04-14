@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class Minion : Entity
 {
-    [SerializeField] private List<SpriteRenderer> auraRenderers = new();
-    [SerializeField] private List<CircleCollider2D> auraColliders = new();
+    [SerializeField] private List<SpriteRenderer> spawnAuraRenderers = new();
+    [SerializeField] private List<CircleCollider2D> spawnAuraColliders = new();
 
     [SerializeField] private GameObject spawnExplosion;
     [SerializeField] private float spawnExplosionDuration;
 
-    public virtual void OnActivate()
+    protected Player player;
+
+    public virtual void OnActivate(Player newPlayer) // Called by Player
     {
+        player = newPlayer;
+
         sr.color = Color.white;
-        foreach (SpriteRenderer auraRenderer in auraRenderers)
+        foreach (SpriteRenderer auraRenderer in spawnAuraRenderers)
             auraRenderer.color = Color.white;
 
-        foreach (CircleCollider2D auraCollider in auraColliders)
+        foreach (CircleCollider2D auraCollider in spawnAuraColliders)
             auraCollider.enabled = true;
 
         SetMoveSpeed();

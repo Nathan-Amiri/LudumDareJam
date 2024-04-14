@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2611846269317883746}
   - component: {fileID: 2438937577361268785}
   - component: {fileID: 7616221852266778383}
-  - component: {fileID: 6830572338072409104}
   m_Layer: 0
   m_Name: GruntEnemy
   m_TagString: Untagged
@@ -33,6 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7598922600862456219}
   - {fileID: 6600242759851468043}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -102,7 +102,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sr: {fileID: 2611846269317883746}
   rb: {fileID: 7616221852266778383}
-  col: {fileID: 6830572338072409104}
   auraCol: {fileID: 1779884345261711212}
   defaultMoveSpeed: 2
   facingSprites:
@@ -139,13 +138,59 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &6830572338072409104
+--- !u!1 &7528474807847348669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7598922600862456219}
+  - component: {fileID: 520842855565491069}
+  - component: {fileID: 3869387077329230557}
+  m_Layer: 0
+  m_Name: EnemyHitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7598922600862456219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7528474807847348669}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7764035752528663821}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &520842855565491069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7528474807847348669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f29fef24bf019d4eabfb5c87bfcf75b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 2438937577361268785}
+--- !u!58 &3869387077329230557
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3328963094491394476}
+  m_GameObject: {fileID: 7528474807847348669}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -182,6 +227,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7764035752528663821}
     m_Modifications:
+    - target: {fileID: 1231184325235199272, guid: 422a4aca790ff704a913a69a8d53ad72, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1231184325235199272, guid: 422a4aca790ff704a913a69a8d53ad72, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1231184325235199272, guid: 422a4aca790ff704a913a69a8d53ad72, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

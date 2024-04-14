@@ -16,6 +16,8 @@ public class Player : Entity
     public static Transform corpseMouseOver;
 
     // PREFAB REFERENCE:
+    [SerializeField] protected CircleCollider2D col;
+
     [SerializeField] private List<Minion> minions = new();
     [SerializeField] private List<Sprite> minionSprites = new();
 
@@ -85,7 +87,7 @@ public class Player : Entity
             if (minionToActivate == null)
                 Summon();
             else
-                ActivateZombie();
+                ActivateMinion();
         }
 
         if (isStunned)
@@ -123,11 +125,20 @@ public class Player : Entity
 
         corpseQueue.RemoveAt(0);
     }
-    private void ActivateZombie()
+    private void ActivateMinion()
     {
-        minionToActivate.OnActivate();
+        minionToActivate.OnActivate(this);
 
         minionToActivate = null;
+    }
+
+    public void SummonMinionFromCart(Vector2 position, Vector2 minionFaceDirection)
+    {
+        Minion minion = Instantiate(minions[0], position, Quaternion.identity, zombieParent);
+
+        minion.ChangeFaceDirectionFromVector(minionFaceDirection);
+
+        minion.OnActivate(this);
     }
 
     public void Teleport()
@@ -154,5 +165,11 @@ public class Player : Entity
         isStunned = false;
 
         col.enabled = true;
+    }
+
+    public static Vector2 GetPositivePerpendicular(Vector2 vector)
+    {
+        vector = Vector2.Perpendicular(vector);
+        return new(Mathf.Abs(vector.x), Mathf.Abs(vector.y));
     }
 }

@@ -8,14 +8,19 @@ public class Enemy : Entity
     [SerializeField] private Corpse corpsePref;
     [SerializeField] private int enemyType;
 
-    // Set by EnemySpawner
-    [NonSerialized] public EnemySpawner enemySpawner;
+    protected EnemySpawner enemySpawner;
 
-    private bool dead;
-
-    public void OnSpawn()
+    public virtual void OnSpawn(EnemySpawner newEnemySpawner) // Called by EnemySpawner
     {
+        enemySpawner = newEnemySpawner;
+
         rb.velocity = faceDirection * moveSpeed;
+    }
+
+    public virtual void Die() // Called by EnemyHitbox
+    {
+        SpawnCorpse();
+        DestroyEntity();
     }
 
     public override void DestroyEntity() // Called by EnemySpawner
@@ -23,17 +28,6 @@ public class Enemy : Entity
         enemySpawner.activeEnemies.Remove(this);
 
         base.DestroyEntity();
-    }
-
-    private void OnTriggerStay2D(Collider2D col)
-    {
-        if (!dead && col.CompareTag("DarkTile"))
-        {
-            dead = true;
-
-            SpawnCorpse();
-            DestroyEntity();
-        }
     }
 
     private void SpawnCorpse()

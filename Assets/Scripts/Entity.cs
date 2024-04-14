@@ -11,14 +11,13 @@ public class Entity : MonoBehaviour
     // PREFAB REFERENCE:
     [SerializeField] protected SpriteRenderer sr;
     [SerializeField] protected Rigidbody2D rb;
-    [SerializeField] protected CircleCollider2D col;
 
     [SerializeField] protected CircleCollider2D auraCol;
 
     [SerializeField] private float defaultMoveSpeed;
 
     // CONSTANT:
-    [SerializeField] private List<Sprite> facingSprites = new();
+    [SerializeField] protected List<Sprite> facingSprites = new();
 
     // DYNAMIC:
     protected Vector2 faceDirection;

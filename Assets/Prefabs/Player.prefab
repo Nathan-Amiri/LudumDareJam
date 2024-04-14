@@ -102,21 +102,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sr: {fileID: 3800793064109666485}
   rb: {fileID: 4812432579170558682}
-  col: {fileID: 3556799891844642842}
   auraCol: {fileID: 7683866308497153923}
-  lightAura: 0
-  defaultMoveSpeed: 4
+  defaultMoveSpeed: 3.5
   facingSprites:
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  col: {fileID: 3556799891844642842}
   minions:
-  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
-  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
-  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
-  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
-  - {fileID: 2066096574556670928, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
+  - {fileID: 3243668490027895903, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
+  - {fileID: -4496833677117193286, guid: 379703e755598b44c9cda44bf3732ce5, type: 3}
+  - {fileID: 3243668490027895903, guid: badfc5511c5c41944a1417c90f87934f, type: 3}
+  - {fileID: 2894152499188819239, guid: 7915215fa3de1794a99e204a3ffab7e5, type: 3}
   minionSprites:
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
@@ -198,6 +196,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8428529196519333832}
     m_Modifications:
+    - target: {fileID: 1231184325235199272, guid: 422a4aca790ff704a913a69a8d53ad72, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1231184325235199272, guid: 422a4aca790ff704a913a69a8d53ad72, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1231184325235199272, guid: 422a4aca790ff704a913a69a8d53ad72, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
