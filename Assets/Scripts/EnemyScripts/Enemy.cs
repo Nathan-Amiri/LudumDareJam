@@ -21,7 +21,7 @@ public class Enemy : Entity
 
     public override void DestroyEntity() // Called by EnemySpawner
     {
-        //enemySpawner.activeEnemies.Remove(this);
+        enemySpawner.activeEnemies.Remove(this);
 
         base.DestroyEntity();
     }
@@ -39,6 +39,8 @@ public class Enemy : Entity
 
     private void SpawnCorpse()
     {
+
+
         Corpse corpse = Instantiate(corpsePref, transform.position, Quaternion.identity);
         corpse.OnSpawn(enemyType);
     }

@@ -105,7 +105,7 @@ MonoBehaviour:
   col: {fileID: 3556799891844642842}
   auraCol: {fileID: 7683866308497153923}
   lightAura: 0
-  defaultMoveSpeed: 3
+  defaultMoveSpeed: 4
   facingSprites:
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}

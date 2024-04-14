@@ -20,7 +20,7 @@ public class Player : Entity
     [SerializeField] private Transform zombieParent;
 
     // CONSTANT:
-    [SerializeField] private float teleportDuration = .3f;
+    [SerializeField] private float teleportDuration;
 
     private readonly List<int> corpseQueue = new();
 
