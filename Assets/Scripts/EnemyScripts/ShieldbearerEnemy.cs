@@ -28,10 +28,7 @@ public class ShieldbearerEnemy : Enemy
             return;
         }
 
-        StartCoroutine(enemySpawner.audioManager.PlayClip(2));
-
-        // Update sprite
-        ChangeFaceDirectionFromVector(faceDirection);
+        enemySpawner.audioManager.PlayClip(2);
 
         StartCoroutine(Stun());
     }

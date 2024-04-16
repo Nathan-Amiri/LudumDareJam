@@ -95,8 +95,7 @@ public class Player : Entity
 
         // Snappy horizontal movement:
         // (This movement method will prevent the player from slowing completely in a frictionless environment. To prevent this,
-        // ensure that either at least a tiny bit of friction is present or the player's velocity is rounded to 0 when low enough)
-        // (In this project, the player is frictionless, but a small amount of linear drag has been added)
+        // this rigidbody's linear velocity is set to .01)
         Vector2 desiredVelocity = moveInput * moveSpeed;
         Vector2 velocityChange = desiredVelocity - rb.velocity;
         Vector2 acceleration = velocityChange / .05f;
@@ -109,7 +108,7 @@ public class Player : Entity
         if (corpseQueue.Count == 0)
             return;
 
-        StartCoroutine(audioManager.PlayClip(4));
+        audioManager.PlayClip(4);
 
         minionToActivate = Instantiate(minions[corpseQueue[0]], mousePosition, Quaternion.identity, zombieParent);
         minionToActivate.OnSpawn(this);

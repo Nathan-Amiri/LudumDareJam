@@ -12,7 +12,12 @@ public class AudioManager : MonoBehaviour
 
     private bool diePlaying;
 
-    public IEnumerator PlayClip(int clipNumber)
+    public void PlayClip(int clipNumber)
+    {
+        StartCoroutine(ClipRoutine(clipNumber));
+    }
+
+    private IEnumerator ClipRoutine(int clipNumber)
     {
         if (clipNumber == 3)
         {

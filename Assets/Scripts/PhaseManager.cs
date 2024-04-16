@@ -67,7 +67,7 @@ public class PhaseManager : MonoBehaviour
         player.GameStartEnd(true);
         enemySpawner.StartStopSpawning(true);
 
-        StartCoroutine(audioManager.PlayClip(0));
+        audioManager.PlayClip(0);
 
         yield return new WaitForSeconds(gameDuration);
 

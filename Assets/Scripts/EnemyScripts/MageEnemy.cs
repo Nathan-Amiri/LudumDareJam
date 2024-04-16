@@ -44,7 +44,7 @@ public class MageEnemy : Enemy
 
         exploded = true;
 
-        StartCoroutine(enemySpawner.audioManager.PlayClip(1));
+        enemySpawner.audioManager.PlayClip(1);
         hitbox.enabled = false;
         mageExplosion.SetActive(true);
 

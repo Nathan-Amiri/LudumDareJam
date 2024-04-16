@@ -18,10 +18,10 @@ public class Enemy : Entity
 
     public virtual void Die() // Called by Aura
     {
+        enemySpawner.audioManager.PlayClip(3);
+
         enemySpawner.player.AddCorpse(enemyType);
         DestroyEntity();
-
-        StartCoroutine(enemySpawner.audioManager.PlayClip(3));
     }
 
     public override void DestroyEntity() // Called by EnemySpawner
