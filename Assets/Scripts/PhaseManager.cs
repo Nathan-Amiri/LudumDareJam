@@ -2,18 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PhaseManager : MonoBehaviour
 {
-    // STATIC:
-    public static float CurrentPhase;
-
-    public static float LightningPhaseIncrease;
-    public static bool LightningPhase;
-
     // SCENE REFERENCE:
     [SerializeField] private EnemySpawner enemySpawner;
     [SerializeField] private Player player;
+    [SerializeField] private AudioManager audioManager;
 
     [SerializeField] private GameObject menuScreen;
     [SerializeField] private GameObject gameUI;
@@ -22,18 +18,14 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private TMP_Text endScoreText;
 
-    [SerializeField] private float phaseDuration;
+    private readonly float gameDuration = 308;
 
     // CONSTANT:
     [SerializeField] private float lightningPhaseIncrease;
 
     // DYNAMIC:
-    private float timeRemaining;
+    private float timeRemaining = 308;
 
-    private void Awake()
-    {
-        LightningPhaseIncrease = lightningPhaseIncrease;
-    }
     private void Update()
     {
         if (gameUI.activeSelf)
@@ -41,7 +33,7 @@ public class PhaseManager : MonoBehaviour
             currentScoreText.text = "Current Score:\n" + GetScore().ToString() + "%";
 
             timeRemaining -= Time.deltaTime;
-            clockText.text = "New Phase in:\n" + Mathf.CeilToInt(timeRemaining).ToString();
+            clockText.text = "Time remaining:\n" + Mathf.CeilToInt(timeRemaining).ToString();
         }
     }
 
@@ -61,24 +53,23 @@ public class PhaseManager : MonoBehaviour
         StartCoroutine(PhaseRoutine());
     }
 
+    public void SelectNewGame()
+    {
+        Tile.tilesOnGrid.Clear();
+        SceneManager.LoadScene(0);
+    }
+
     private IEnumerator PhaseRoutine()
     {
-        CurrentPhase = 1;
-
         menuScreen.SetActive(false);
         gameUI.SetActive(true);
 
         player.GameStartEnd(true);
         enemySpawner.StartStopSpawning(true);
 
-        while (CurrentPhase < 4)
-        {
-            NewPhase();
+        StartCoroutine(audioManager.PlayClip(0));
 
-            yield return new WaitForSeconds(phaseDuration);
-
-            CurrentPhase += 1;
-        }
+        yield return new WaitForSeconds(gameDuration);
 
         enemySpawner.StartStopSpawning(false);
         player.GameStartEnd(false);
@@ -86,39 +77,5 @@ public class PhaseManager : MonoBehaviour
         gameUI.SetActive(false);
         endScoreText.text = "Final Score:\n" + GetScore() + "%";
         gameOverScreen.SetActive(true);
-    }
-
-    private void NewPhase()
-    {
-        timeRemaining = phaseDuration;
-
-        player.SetMoveSpeed();
-
-        enemySpawner.ClearEnemies();
-        enemySpawner.NewEnemyPool(false);
-
-        int newMode = Random.Range(0, 8);
-
-        if (newMode < 4)
-        {
-            //enemySpawner.NewEnemyPool(true, newMode + 1);
-            return;
-        }
-
-        switch (newMode)
-        {
-            case 4:
-
-                break;
-            case 5:
-
-                break;
-            case 6:
-
-                break;
-            case 7:
-
-                break;
-        }
     }
 }

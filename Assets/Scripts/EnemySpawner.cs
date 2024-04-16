@@ -8,6 +8,10 @@ public class EnemySpawner : MonoBehaviour
     // SCENE REFERENCE:
     [SerializeField] private List<Enemy> enemyPrefs = new();
 
+        // Read by Enemy
+    public Player player;
+    public AudioManager audioManager;
+
     [SerializeField] private Transform enemyParent;
 
     [SerializeField] private float spawnDistance;
@@ -18,8 +22,8 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private List<int> spawnChanceByType = new();
 
-    [SerializeField] private int enemyModeIncrease;
-    [SerializeField] private int enemyModeDecrease;
+    //[SerializeField] private int enemyModeIncrease;
+    //[SerializeField] private int enemyModeDecrease;
 
     // CONSTANT:
     private readonly List<int> enemyTypePool = new();
@@ -30,25 +34,31 @@ public class EnemySpawner : MonoBehaviour
     // DYNAMIC:
     private Coroutine spawnRoutine;
 
-    public void NewEnemyPool(bool boost, int boostedType = 0) // Called by PhaseManager
-    {
-        for (int i = 0; i < spawnChanceByType.Count; i++)
-        {
-            int chance = spawnChanceByType[i];
+    //public void NewEnemyPool(bool boost, int boostedType = 0)
+    //{
+    //    for (int i = 0; i < spawnChanceByType.Count; i++)
+    //    {
+    //        int chance = spawnChanceByType[i];
 
-            if (boost)
-                chance += i == boostedType ? enemyModeIncrease : -enemyModeDecrease;
+    //        if (boost)
+    //            chance += i == boostedType ? enemyModeIncrease : -enemyModeDecrease;
 
-            for (int j = 0; j < chance; j++)
-                enemyTypePool.Add(i);
-        }
-    }
+    //        for (int j = 0; j < chance; j++)
+    //            enemyTypePool.Add(i);
+    //    }
+    //}
 
     public void StartStopSpawning(bool start) // Called by PhaseManager
     {
         if (start)
         {
-            NewEnemyPool(false);
+            for (int i = 0; i < spawnChanceByType.Count; i++)
+            {
+                int chance = spawnChanceByType[i];
+
+                for (int j = 0; j < chance; j++)
+                    enemyTypePool.Add(i);
+            }
 
             if (spawnRoutine != null)
                 Debug.LogError("Spawn routine already running!");
@@ -72,8 +82,8 @@ public class EnemySpawner : MonoBehaviour
 
             float delay = averageSpawnDelay + UnityEngine.Random.Range(-spawnDelayVariance / 2, spawnDelayVariance / 2);
 
-            if (PhaseManager.LightningPhase)
-                delay *= 1 - PhaseManager.LightningPhaseIncrease;
+            //if (PhaseManager.LightningPhase)
+            //    delay *= 1 - PhaseManager.LightningPhaseIncrease;
 
             yield return new WaitForSeconds(delay);
         }
@@ -97,8 +107,20 @@ public class EnemySpawner : MonoBehaviour
         activeEnemies.Add(enemy);
 
         enemy.ChangeFaceDirectionFromVector(faceDirection);
-        enemy.SetMoveSpeed();
+        //enemy.SetMoveSpeed();
         enemy.OnSpawn(this);
+        StartCoroutine(EnemyDespawn(enemy));
+    }
+
+    private IEnumerator EnemyDespawn(Enemy enemy)
+    {
+        yield return new WaitForSeconds(25);
+
+        if (enemy == null)
+            yield break;
+
+        activeEnemies.Remove(enemy);
+        enemy.DestroyEntity();
     }
 
     public void ClearEnemies()

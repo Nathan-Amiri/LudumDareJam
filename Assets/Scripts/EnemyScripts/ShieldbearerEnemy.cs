@@ -10,9 +10,6 @@ public class ShieldbearerEnemy : Enemy
 
     [SerializeField] private float stunDuration;
 
-    [SerializeField] private List<Sprite> mediumArmorSprites = new();
-    [SerializeField] private List<Sprite> lowArmorSprites = new();
-
     private int health = 3;
 
     private bool isStunned;
@@ -31,7 +28,8 @@ public class ShieldbearerEnemy : Enemy
             return;
         }
 
-        facingSprites = health == 2 ? mediumArmorSprites : lowArmorSprites;
+        StartCoroutine(enemySpawner.audioManager.PlayClip(2));
+
         // Update sprite
         ChangeFaceDirectionFromVector(faceDirection);
 
@@ -49,8 +47,5 @@ public class ShieldbearerEnemy : Enemy
         aura.SetActive(true);
         isStunned = false;
         rb.velocity = faceDirection * moveSpeed;
-
-        // Wait to declare not dead until Aura has been flickered so that below tiles turn light again
-        enemyHitbox.ShieldbearerNotDead();
     }
 }

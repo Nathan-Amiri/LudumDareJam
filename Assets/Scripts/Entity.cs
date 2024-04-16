@@ -14,15 +14,16 @@ public class Entity : MonoBehaviour
 
     [SerializeField] protected CircleCollider2D auraCol;
 
-    [SerializeField] private float defaultMoveSpeed;
-
-    // CONSTANT:
-    [SerializeField] protected List<Sprite> facingSprites = new();
+    [SerializeField] protected float moveSpeed;
 
     // DYNAMIC:
     protected Vector2 faceDirection;
 
-    protected float moveSpeed;
+    protected virtual void Update()
+    {
+        float rotation = rb.velocity.x >= 0 ? 0 : 180;
+        transform.rotation = Quaternion.Euler(0, rotation, 0);
+    }
 
     public void ChangeFaceDirectionFromVector(Vector2 normalizedDirection)
     {
@@ -44,16 +45,7 @@ public class Entity : MonoBehaviour
 
     public void ChangeFaceDirection(int facingDirectionIndex)
     {
-        sr.sprite = facingSprites[facingDirectionIndex];
-
         faceDirection = directions[facingDirectionIndex];
-    }
-
-    public void SetMoveSpeed()
-    {
-        moveSpeed = defaultMoveSpeed;
-        if (PhaseManager.LightningPhase)
-            moveSpeed *= 1 + PhaseManager.LightningPhaseIncrease;
     }
 
     public virtual void DestroyEntity()

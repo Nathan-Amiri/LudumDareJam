@@ -6,28 +6,27 @@ public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
 
-    // List clips in this comment
+    // 0 = music, 1 = explosion, 2 = metal, 3 = die, 4 = summon
     [SerializeField] private List<AudioClip> clipList = new();
     [SerializeField] private List<float> volumeList = new();
 
-    private readonly List<bool> clipPlaying = new();
-
-    private void Awake()
-    {
-        for (int i = 0; i < clipList.Count; i++)
-            clipPlaying.Add(false);
-    }
+    private bool diePlaying;
 
     public IEnumerator PlayClip(int clipNumber)
     {
-        if (clipPlaying[clipNumber]) yield break;
+        if (clipNumber == 3)
+        {
+            if (diePlaying)
+                yield break;
 
-        clipPlaying[clipNumber] = true;
+            diePlaying = true;
+        }
 
         audioSource.PlayOneShot(clipList[clipNumber], volumeList[clipNumber]);
 
         yield return new WaitForSeconds(clipList[clipNumber].length);
 
-        clipPlaying[clipNumber] = false;
+        if (clipNumber == 3)
+            diePlaying = false;
     }
 }

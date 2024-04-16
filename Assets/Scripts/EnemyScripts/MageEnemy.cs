@@ -28,14 +28,23 @@ public class MageEnemy : Enemy
         targetExplosionPosition = Vector2Int.RoundToInt(targetPositionFloat);
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+        
         if (Vector2Int.RoundToInt(transform.position) == targetExplosionPosition)
             StartCoroutine(Explode());
     }
 
+    private bool exploded;
     private IEnumerator Explode()
     {
+        if (exploded)
+            yield break;
+
+        exploded = true;
+
+        StartCoroutine(enemySpawner.audioManager.PlayClip(1));
         hitbox.enabled = false;
         mageExplosion.SetActive(true);
 

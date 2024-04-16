@@ -8,9 +8,9 @@ public class CartMinion : Minion
 
     private int spawnDistance = 1;
 
-    public override void OnActivate(Player player)
+    public override void OnActivate()
     {
-        base.OnActivate(player);
+        base.OnActivate();
 
         StartCoroutine(SpawnGrunts());
     }

@@ -1,19 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : Entity
 {
     // ENEMY/CORPSE/MINION TYPE NUMBERS CONSISTENT ACROSS SCRIPTS:
-    // 0 = Grunt, 1 = Mage, 2 = Priest, 3 = Cart, 4 = Shieldbearer
+    // 0 = Grunt, 1 = Mage, 2 = Cart, 3 = Shieldbearer
 
     // STATIC:
     public static Vector2 mousePosition;
-
-        // Set by Corpse
-    public static Transform corpseMouseOver;
 
     // PREFAB REFERENCE:
     [SerializeField] protected CircleCollider2D col;
@@ -22,6 +20,9 @@ public class Player : Entity
     [SerializeField] private List<Sprite> minionSprites = new();
 
     // SCENE REFERENCE:
+        // Read by MageMinion, ShieldbearerMinion
+    public AudioManager audioManager;
+
     [SerializeField] private Camera mainCamera;
 
     [SerializeField] private Transform zombieParent;
@@ -29,11 +30,7 @@ public class Player : Entity
     [SerializeField] private GameObject summonQueue;
     [SerializeField] private Image nextSummonImage;
 
-    // CONSTANT:
-    [SerializeField] private float teleportDuration;
-
-        // Accessed by Aura
-    [NonSerialized] public readonly List<int> corpseQueue = new();
+    private readonly List<int> corpseQueue = new();
 
     // DYNAMIC:
     private Vector2 moveInput;
@@ -42,24 +39,17 @@ public class Player : Entity
 
     private Minion minionToActivate;
 
-    private Vector2 teleportDestination;
-    private Coroutine teleportRoutine;
-
     public void GameStartEnd(bool start)
     {
-        if (!start && teleportRoutine != null)
-        {
-            StopCoroutine(teleportRoutine);
-            col.enabled = true;
-        }
-
         isStunned = !start;
-        if (!start)
-            rb.velocity = Vector2.zero;
+
+        rb.velocity = Vector2.zero;
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (corpseQueue.Count > 0)
             nextSummonImage.sprite = minionSprites[corpseQueue[0]];
         if (corpseQueue.Count > 0 && !summonQueue.activeSelf)
@@ -82,6 +72,9 @@ public class Player : Entity
                 minionToActivate.ChangeFaceDirectionFromVector(direction.normalized);
         }
 
+        if (isStunned)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             if (minionToActivate == null)
@@ -90,11 +83,6 @@ public class Player : Entity
                 ActivateMinion();
         }
 
-        if (isStunned)
-            return;
-
-        if (Input.GetMouseButtonDown(1))
-            Teleport();
     }
 
     protected void FixedUpdate()
@@ -121,13 +109,16 @@ public class Player : Entity
         if (corpseQueue.Count == 0)
             return;
 
+        StartCoroutine(audioManager.PlayClip(4));
+
         minionToActivate = Instantiate(minions[corpseQueue[0]], mousePosition, Quaternion.identity, zombieParent);
+        minionToActivate.OnSpawn(this);
 
         corpseQueue.RemoveAt(0);
     }
     private void ActivateMinion()
     {
-        minionToActivate.OnActivate(this);
+        minionToActivate.OnActivate();
 
         minionToActivate = null;
     }
@@ -138,33 +129,13 @@ public class Player : Entity
 
         minion.ChangeFaceDirectionFromVector(minionFaceDirection);
 
-        minion.OnActivate(this);
+        minion.OnSpawn(this);
+        minion.OnActivate();
     }
 
-    public void Teleport()
+    public void AddCorpse(int corpseType)
     {
-        if (corpseMouseOver == null)
-            return;
-
-        col.enabled = false;
-        isStunned = true;
-
-        teleportDestination = corpseMouseOver.transform.position;
-        teleportRoutine = StartCoroutine(TeleportRoutine(teleportDuration));
-
-        float teleportSpeed = Vector2.Distance(teleportDestination, transform.position) / teleportDuration;
-        rb.velocity = teleportSpeed * ((Vector3)teleportDestination - transform.position).normalized;
-    }
-    private IEnumerator TeleportRoutine(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-
-        rb.velocity = Vector3.zero;
-        transform.position = (Vector3)teleportDestination;
-
-        isStunned = false;
-
-        col.enabled = true;
+        corpseQueue.Add(corpseType);
     }
 
     public static Vector2 GetPositivePerpendicular(Vector2 vector)

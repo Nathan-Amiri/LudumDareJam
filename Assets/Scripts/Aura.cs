@@ -12,19 +12,13 @@ public class Aura : MonoBehaviour
     {
         if (lightAura && col.CompareTag("DarkTile"))
             col.GetComponent<Tile>().ToggleLightDark(true);
-
-        else if (col.CompareTag("Corpse") && entity is Player player)
-        {
-            Corpse corpse = col.GetComponent<Corpse>();
-
-            player.corpseQueue.Add(corpse.corpseType);
-
-            Destroy(corpse.gameObject);
-        }
     }
     private void OnTriggerStay2D(Collider2D col)
     {
         if (!lightAura && col.CompareTag("LightTile"))
             col.GetComponent<Tile>().ToggleLightDark(false);
+
+        else if (!lightAura && col.CompareTag("EnemyHitbox"))
+            col.GetComponent<EnemyHitbox>().enemy.Die();
     }
 }

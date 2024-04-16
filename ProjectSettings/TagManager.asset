@@ -7,6 +7,7 @@ TagManager:
   - LightTile
   - DarkTile
   - Corpse
+  - EnemyHitbox
   layers:
   - Default
   - TransparentFX
@@ -50,8 +51,8 @@ TagManager:
   - name: Obstacle
     uniqueID: 3152984509
     locked: 0
-  - name: Corpse
-    uniqueID: 2153746749
+  - name: Aura
+    uniqueID: 2739289537
     locked: 0
   - name: Enemy
     uniqueID: 718624601

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Enemy : Entity
 {
-    [SerializeField] private Corpse corpsePref;
     [SerializeField] private int enemyType;
 
     protected EnemySpawner enemySpawner;
@@ -17,10 +16,12 @@ public class Enemy : Entity
         rb.velocity = faceDirection * moveSpeed;
     }
 
-    public virtual void Die() // Called by EnemyHitbox
+    public virtual void Die() // Called by Aura
     {
-        SpawnCorpse();
+        enemySpawner.player.AddCorpse(enemyType);
         DestroyEntity();
+
+        StartCoroutine(enemySpawner.audioManager.PlayClip(3));
     }
 
     public override void DestroyEntity() // Called by EnemySpawner
@@ -28,15 +29,5 @@ public class Enemy : Entity
         enemySpawner.activeEnemies.Remove(this);
 
         base.DestroyEntity();
-    }
-
-    private void SpawnCorpse()
-    {
-        Vector2Int gridPosition = Vector2Int.RoundToInt(transform.position);
-        if (gridPosition.magnitude > 18)
-            return;
-
-        Corpse corpse = Instantiate(corpsePref, (Vector2)gridPosition, Quaternion.identity);
-        corpse.OnSpawn(enemyType);
     }
 }
