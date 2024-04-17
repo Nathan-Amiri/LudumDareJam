@@ -14,7 +14,6 @@ public class Minion : Entity
         player = newPlayer;
 
         StartCoroutine(SpawnExplosionEnd());
-        StartCoroutine(DespawnMinion());
     }
 
     public virtual void OnActivate() // Called by Player
@@ -27,11 +26,5 @@ public class Minion : Entity
         yield return new WaitForSeconds(spawnExplosionDuration);
 
         spawnExplosion.SetActive(false);
-    }
-
-    private IEnumerator DespawnMinion()
-    {
-        yield return new WaitForSeconds(25);
-        DestroyEntity();
     }
 }

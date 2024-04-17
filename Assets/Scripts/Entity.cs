@@ -23,6 +23,9 @@ public class Entity : MonoBehaviour
     {
         float rotation = rb.velocity.x >= 0 ? 0 : 180;
         transform.rotation = Quaternion.Euler(0, rotation, 0);
+
+        if (Mathf.Abs(transform.position.x) > 50 || Mathf.Abs(transform.position.y) > 50)
+            DestroyEntity();
     }
 
     public void ChangeFaceDirectionFromVector(Vector2 normalizedDirection)

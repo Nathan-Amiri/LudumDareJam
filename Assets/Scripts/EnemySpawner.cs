@@ -109,18 +109,6 @@ public class EnemySpawner : MonoBehaviour
         enemy.ChangeFaceDirectionFromVector(faceDirection);
         //enemy.SetMoveSpeed();
         enemy.OnSpawn(this);
-        StartCoroutine(EnemyDespawn(enemy));
-    }
-
-    private IEnumerator EnemyDespawn(Enemy enemy)
-    {
-        yield return new WaitForSeconds(25);
-
-        if (enemy == null)
-            yield break;
-
-        activeEnemies.Remove(enemy);
-        enemy.DestroyEntity();
     }
 
     public void ClearEnemies()
