@@ -1,6 +1,6 @@
 Necromaniacal is a submission to Ludum Dare's April 2024 Game Jam
 
-Original music was composed by Rosko
+Original music by Rosko Vair
 
 Created in Unity and coded in C#
 
